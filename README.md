@@ -1,4 +1,4 @@
-keylookup
-=========
+boilerplate
+===========
 
-lookup information of a shortcut key
+A boilerplate for my Django projects to get things started really quick

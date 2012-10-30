@@ -1,0 +1,7 @@
+Django
+South
+Werkzeug
+django-cpserver
+django-debug-toolbar
+django-extensions
+psycopg2
