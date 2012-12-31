@@ -1,7 +1,7 @@
 function KeylookupCtrl($scope) {
     //get data from backend and bind to view
-    //$http.get("/api/config?fields=id,site_name,test_uri,country").success(function(data) {
-    //    $scope.configs = _.map(data, translate_country_name);
+    //$http.get("/api/url").success(function(data) {
+    //    $scope.data = data;
     //});
     $scope.data = [
         {key_code: "Cmd-Click", application: "Finder", description: "Open Sidebar item in a new window"},
@@ -9,6 +9,7 @@ function KeylookupCtrl($scope) {
         {key_code: "Cmd-2", application: "Finder", description: "Switch Finder views (List)"},
         {key_code: "Cmd-3", application: "Finder", description: "Switch Finder views (Column)"},
         {key_code: "Cmd-4", application: "Finder", description: "Switch Finder views (Cover Flow)"},
+        {key_code: "Cmd-Shift-A", application: "Findier", description: "Open the Applications folder"},
         {key_code: "Cmd-Tab", application: "App Switcher", description: "to switch to last used app."},
         {key_code: "Opt-Left", application: "Working with Text", description: "Go to beginning of current or previous word"},
         {key_code: "Ctrl-A", application: "Emacs", description: "go to start of line (move cursor to start of line) 	"},
@@ -24,7 +25,8 @@ function KeylookupCtrl($scope) {
         {key_code: "Ctrl-V", application: "Emacs", description: "scroll down 	"},
         {key_code: "Ctrl-L", application: "Emacs", description: "center the current line in the window 	"},
         {key_code: "Ctrl-O", application: "Emacs", description: "insert line break after the cursor without moving the cursor 	"},
-        {key_code: "Ctrl-T", application: "Emacs", description: "transpose letters (swaps letters on left and right of cursor) 	"}
+        {key_code: "Ctrl-T", application: "Emacs", description: "transpose letters (swaps letters on left and right of cursor) 	"},
+        {key_code: "Shift-Tab", application: "Any", description: "Navigate through controls in a reverse direction"}
     ];
     
     //bind downdown list
@@ -36,16 +38,26 @@ function KeylookupCtrl($scope) {
     
     //event handlers
     $scope.apply_filter = function() {
-        var key_code = ($scope.key.command ? "Cmd-" : "") + 
+        var key_code = (($scope.key.command ? "Cmd-" : "") + 
                                     ($scope.key.option ? "Opt-" : "") + 
                                     ($scope.key.ctrl ? "Ctrl-" : "") + 
                                     ($scope.key.shift ? "Shift-" : "") + 
-                                    $scope.key.name;
+                                    $scope.key.name).toLowerCase();
                                     
+        var filter_function;
         if (key_code == "") {
             $scope.results = $scope.data;
         } else {
-            $scope.results = _.filter($scope.data, function(obj) {return obj.key_code.toLowerCase() == key_code.toLowerCase();});
+            if ($scope.key.name == "") {
+                filter_function = function(obj) {
+                    return obj.key_code.toLowerCase().indexOf(key_code) == 0;
+                };
+            } else {
+                filter_function = function(obj) {
+                    return obj.key_code.toLowerCase() == key_code;
+                };
+            }
+            $scope.results = _.filter($scope.data, filter_function);
         }
         $scope.search = "";
     };
@@ -53,5 +65,6 @@ function KeylookupCtrl($scope) {
     $scope.reset = function() {
         $scope.key = {command: false, ctrl: false, shift: false, name: ""};
         $scope.search = "";
-    }
+        $scope.apply_filter();
+    };
 }

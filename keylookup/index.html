@@ -1,0 +1,89 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" ng-app> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Keyboard shortcut lookup</title>
+	<meta name="description" content="This app is the result of a coding test" />
+	<meta name="author" content="Wong Jiang Fung" />
+
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="assets/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="assets/css/project_base.css" />
+
+	<script src="assets/js/libs/modernizr-2.5.3.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h2>Lookup a keyboard shortcut here</h2>
+</header>
+
+<div role="main">
+	<div class="container" ng-controller="KeylookupCtrl">
+		<datalist id="keys">
+			<select><!-- put select tag around options to fix an angular.js bug -->
+				<option ng-repeat="name in key_names">{{ name }}</option>
+			</select>
+		</datalist>
+		
+		<br />
+		<div class="row">
+			<div class="span8"><input type="text" ng-model="search" placeholder="Search" /></div>
+		</div>
+		<div class="row">
+			<div class="span4"><strong>Modifiers:</strong></div>
+			<div class="span2"><strong>Name of the key:</strong></div>
+		</div>
+		<div class="row">
+			<div class="span1"><input type="checkbox" ng-model="key.command" ng-change="apply_filter()" /><br />Command</div>
+			<div class="span1"><input type="checkbox" ng-model="key.ctrl" ng-change="apply_filter()" /><br />Ctrl</div>
+			<div class="span1"><input type="checkbox" ng-model="key.shift" ng-change="apply_filter()" /><br />Shift</div>
+			<div class="span1"><input type="checkbox" ng-model="key.option" ng-change="apply_filter()" /><br />Option</div>
+			<div class="span3"><input type="text" list="keys" size="10" ng-model="key.name" ng-change="apply_filter()" /></div>
+			<div class="span1"><button class="btn" ng-click="reset()">Reset</button></div>
+		</div>
+		
+		<div class="row result">
+			<div class="span8">
+				<ul>
+					<li ng-repeat="result in results | filter:search | orderBy:application">
+						{{ result.application }}
+						<p><span ng-bind="result.key_code"></span> : <span ng-bind="result.description"></span></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+    <div id="footer_band">
+        <div class="container">
+            <div class="row">
+                <div class="span3">
+                    <h2>Contact</h2>
+                    <p>Email us at mediapop ~[at]~  gmail.com</p>
+                </div>
+            </div>
+            <div id="footer_last_message"><p>&copy; <em>mediapop.co</em> All rights reserved.</p></div>
+        </div>
+    </div>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="assets/js/libs/jquery-1.8.1.min.js"><\/script>')</script>
+<script src="assets/js/libs/bootstrap.min.js"></script>
+<script src="assets/js/plugins.js"></script>
+<script src="assets/js/libs/underscore-min.js"></script>
+<script src="assets/js/libs/angular-1.0.1.min.js"></script>
+<script src="assets/js/script.js"></script>
+
+</body>
+</html>
