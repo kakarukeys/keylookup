@@ -1,4 +1,4 @@
-boilerplate
+Mac OS keyboard shortcuts lookup app
 ===========
 
 A simple angular.js app to illustrate the use of
